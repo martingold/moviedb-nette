@@ -1,0 +1,6 @@
+parameters:
+
+database:
+	dsn: 'mysql:host=db;dbname=moviedb-nette'
+	user: root
+	password: root

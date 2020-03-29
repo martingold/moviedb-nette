@@ -1,0 +1,100 @@
+{block content}
+
+<div class="mt-4">
+	<h1 class="text-3xl">Nejnovější filmy a seriály</h1>
+	<div class="flex flex-row -mx-2">
+		<a
+			n:href="Movie:detail $latestMovie->slug"
+			n:foreach="$latestMovies as $latestMovie"
+			class="m-2 w-1/3 bg-gray-100 rounded overflow-hidden border shadow border-gray-white flex-col flex"
+		>
+			<span
+				class="block bg-cover bg-no-repeat h-64"
+				style="background-image: url('{$latestMovie->imageUrl}')"
+			></span>
+			<span class="m-4 block flex flex-col flex-grow">
+				<span class="block flex items-center justify-between">
+					<span class="flex items-center">
+						<span class="text-2xl text-gray-800 font-semibold">
+							{$latestMovie->title}
+						</span>
+						<span n:if="$latestMovie->overallRating !== null" class="text-xl text-red-600 ml-2 pr-4">
+							{$latestMovie->overallRating|number:'1':',',''}
+							<span class="text-sm">%</span>
+						</span>
+					</span>
+					<span class="text-xs text-gray-500 items-center">
+						přidáno {$latestMovie->created|date:'d.m.Y'}
+					</span>
+				</span>
+				<span class="block mt-2 text-gray-800 text-justify"
+					  style="display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;">
+					{$latestMovie->description}
+				</span>
+				<span class="block flex justify-between mt-2 items-center">
+					<span class="text-red-500 text-2xl">
+						{if $latestMovie->overallRating !== null}
+							{php $stars = round($latestMovie->overallRating / 20.0)}
+							{for $i = 0; $i < $stars; $i++}
+								&#9733;
+							{/for}
+							{for $i = 0; $i < 5 - $stars; $i++}
+								&#9734
+							{/for}
+
+						{/if}
+					</span>
+
+					<span class="text-gray-500 cursor-pointer hover:text-red-800 align">
+						Přejít na detail &gt;&gt;
+					</span>
+				</span>
+			</span>
+		</a>
+	</div>
+	<h2 class="text-2xl my-4">Nejnovější komentáře</h2>
+	<div class="flex -mx-2">
+		<div n:foreach="$latestRatings as $rating" class="w-1/3 rounded overflow-hidden border shadow flex-grow flex-col flex bg-white mx-2">
+			<div class="bg-red-600 flex p-2">
+				<div class="flex-grow text-white">
+					{$rating->user->name}
+				</div>
+				<div class="text-sm text-gray-200 flex items-center">
+					<div class="mr-2">
+						{$rating->rating} / 10
+					</div>
+					<div>
+						<svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24"
+							 height="24"
+							 viewBox="0 0 24 24">
+							<path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+			<div class="p-4 flex flex-col flex-grow">
+				<div class="text-xl">
+					{$rating->movie->title}
+				</div>
+				<div class="text-gray-700 flex-grow">
+					<div style="display: -webkit-box; -webkit-line-clamp: 10; -webkit-box-orient: vertical; overflow: hidden;">
+						{$rating->comment}
+					</div>
+				</div>
+				<div class="text-right">
+					<a n:href="Movie:detail $latestMovie->slug" class="p-4 text-red-600">
+						Přejít na detail filmu >>
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="flex mt-4">
+	<div class="w-1/2">
+	</div>
+	<div class="w-1/2">
+	</div>
+</div>

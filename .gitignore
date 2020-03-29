@@ -1,0 +1,4 @@
+.idea
+app/config/local.neon
+docker/log
+vendor

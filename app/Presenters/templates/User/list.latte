@@ -1,0 +1,14 @@
+{block title}Přehled uživatelů dle hodnocení{/block}
+{block content}
+<h1 class="text-2xl mt-4 font-semibold">Uživatelé podle počtu hodnocení</h1>
+<div class="bg-white mt-4 border rounded bg-white">
+    <div n:foreach="$users as $userRow" class="p-2 flex{if $iterator->even} bg-gray-100{/if}">
+        <span class="flex-grow">
+            {$userRow->name}
+        </span>
+        <span>
+            {$userRow->count} hodnocení
+        </span>
+    </div>
+</div>
+

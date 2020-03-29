@@ -1,0 +1,58 @@
+{define form $formName}
+    <form n:name=$formName>
+        <ul class=error n:ifcontent>
+            <li n:foreach="$form->ownErrors as $error">{$error}</li>
+        </ul>
+
+        <table>
+            <tr n:foreach="$form->controls as $input"
+                    n:if="!$input->getOption(rendered) && $input->getOption(type) !== hidden"
+                    n:class="$input->required ? required">
+
+                <th>{label $input}</th>
+                <td>{input $input} <span class=error n:ifcontent>{$input->error}</span></td>
+            </tr>
+        </table>
+    </form>
+{/define}
+
+
+{define form-renderer $formName}
+    <form n:name=$formName class=form-horizontal>
+        <ul class=error n:ifcontent>
+            <li n:foreach="$form->ownErrors as $error">
+                <div class="flex items-center bg-red-500 text-white text-sm font-bold px-4 py-3 mb-4" role="alert">
+                    <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                         viewBox="0 0 24 24">
+                        <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"/>
+                    </svg>
+                    <p>{$error}</p>
+                </div>
+            </li>
+        </ul>
+
+        <div n:foreach="$form->controls as $name => $input" n:if="!$input->getOption(rendered) && $input->getOption(type) !== hidden"
+                class="flex mb-4 {php $input->required ? '' : required} {php $input->error ? has-error : ''}">
+
+            <div class="md:w-1/3 flex items-center justify-end">
+                {label $input, class => 'block text-gray-800 font-semibold md:text-right mb-1 md:mb-0 pr-4 required'}
+            </div>
+
+            <div class="w-2/3 {if $input->getOption('type') === 'button'} flex justify-end{/if}">
+                {if $input->getOption(type) in [text, select, textarea]}
+                    {input $input class => 'appearance-none bg-grey-lighter border border-grey-lighter rounded w-full py-2 px-4 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-blue-light'}
+                {elseif $input->getOption(type) === button}
+                    {input $input class => "px-4 py-2 bg-red-500 text-gray-100 rounded hover:bg-red-600"}
+                {elseif $input->getOption(type) === checkbox}
+                    <div class="checkbox">{input $input}</div>
+                {elseif $input->getOption(type) === radio}
+                    <div class="radio">{input $input}</div>
+                {else}
+                    {input $input}
+                {/if}
+
+                <span class=help-block n:ifcontent>{$input->error ?: $input->getOption(description)}</span>
+            </div>
+        </div>
+    </form>
+{/define}

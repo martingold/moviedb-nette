@@ -1,0 +1,22 @@
+version: '3'
+services:
+    php:
+        build:
+            context: ./docker/php
+        ports:
+            -  81:80
+        volumes:
+            - .:/var/www/html
+            - "./docker/log:/var/log/apache2"
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+        links:
+            - db:db
+    db:
+        image: mysql:5.6
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - 33061:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: moviedb-nette

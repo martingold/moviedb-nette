@@ -1,0 +1,33 @@
+parameters:
+
+
+application:
+	errorPresenter: Error
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+
+session:
+	expiration: 14 days
+
+
+services:
+	router: App\Router\RouterFactory::createRouter
+
+	# Repository
+	- App\Repository\MovieRepository
+	- App\Repository\RatingRepository
+	- App\Repository\UserRepository
+
+	# Forms
+	- App\Forms\FormFactory
+	- App\Forms\SignInFormFactory
+	- App\Forms\SignUpFormFactory
+	- App\Forms\CommentFormFactory
+	- App\Forms\MovieAddFormFactory
+
+	# Security
+	- App\Model\UserManager
+
+	# Service
+	- App\Service\Movie\OverallRatingCalculator

@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Service\Movie\OverallRatingCalculator;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$container = App\Bootstrap::boot()
+	->createContainer();
+
+$overallRatingCalulator = $container->getByType(OverallRatingCalculator::class);
+
+$overallRatingCalulator->updateOverallRating();
